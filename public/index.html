@@ -8,20 +8,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <header class="col-md-12 mt-3 mb-3 px-3">
-                <div class="container-fluid block p-3 bg-white d-flex">
-                    <div class="col-10">
-                        <h3>Учет студентов и преподавателей УРПЭТ</h3>
-                    </div>
-                    <div class="col-2">
-                        <a href="about.html" class="btn btn-primary container-fluid m-2">Обо мне</a>
-                    </div>
-                </div>
-            </header>
-            <main class="col-md-10 ps-3">
-                <div class="container-fluid block p-3 bg-white ">
+    <div class="wrapper p-3">
+        <header class="bg-white">
+            <h4>Учет студентов и преподавателей УРПЭТ</h4>
+        </header>
+        <div class="content">
+            <main class="main-content mt-3">
+                <div class="bg-white">
                     <h3>Что хотите сделать сегодня?</h3>
                     <div class="buttons">
                         <button type="button" class="btn btn-primary" id="addStudent">Добавить студента</button>
@@ -33,19 +26,72 @@
                     </div>
                 </div>
             </main>
-            <aside class="col-md-2 pe-3">
-                <div class="container-fluid block p-3 students bg-white ">
-                    <h5 class="text-center">Список студентов</h5>
-                    <span id="students">Здесь пока ничего нет :(</span>
+            <aside class="col-md-2 bg-white ms-3 mt-3 mb-3 ">
+                <h5 class="text-center">Список</h5>
+                <div class="list students">
+                    <div class="nothing">
+                        <p>Здесь пока ничего нет :(</p>
+                    </div>
                 </div>
+
+
+
+
+
+
             </aside>
-            <footer class="fixed-bottom col-md-12 mt-3 mb-3  px-3">
-                <div class="container-fluid bg-white block p-3">
-                    <p>Выльдуров Александр ИСИП-208</p>
-                </div>
-            </footer>
         </div>
+        <footer class="footer mt-auto py-3 bg-white">
+            <div class="container">
+                <span class="text-muted">Мой футер на низу страницы.</span>
+            </div>
+        </footer>
     </div>
+
+
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <header class="col-md-12 mt-3 mb-3 px-3">-->
+<!--                <div class="container-fluid block p-3 bg-white d-flex">-->
+<!--                    <div class="col-10">-->
+<!--                        <h3>Учет студентов и преподавателей УРПЭТ</h3>-->
+<!--                    </div>-->
+<!--                    <div class="col-2">-->
+<!--                        <a href="about.html" class="btn btn-primary container-fluid m-2">Обо мне</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </header>-->
+<!--            <main class="col-md-10 ps-3">-->
+<!--                <div class="container-fluid block p-3 bg-white ">-->
+<!--                    <h3>Что хотите сделать сегодня?</h3>-->
+<!--                    <div class="buttons">-->
+<!--                        <button type="button" class="btn btn-primary" id="addStudent">Добавить студента</button>-->
+<!--                        <button type="button" class="btn btn-primary" id="getAllStudents">Вывести всех студентов</button>-->
+<!--                        <button type="button" class="btn btn-primary" id="delStudent">Удалить студента</button>-->
+<!--                        <button type="button" class="btn btn-primary" id="updateStudent">Изменить студента</button>-->
+<!--                        <button class="btn btn-primary" type="button" id="getStudentsByGroup">Вывести студентов по группе</button>-->
+<!--                        <button class="btn btn-primary" type="button" id="getStudentsByName">Вывести студентов по имени</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </main>-->
+<!--            <aside class="col-md-2 pe-3">-->
+<!--                <div class="container-fluid block p-3 students bg-white ">-->
+<!--                    <h5 class="text-center">Список студентов</h5>-->
+<!--                    <span id="students">Здесь пока ничего нет :(</span>-->
+<!--                </div>-->
+<!--            </aside>-->
+<!--            <footer class="footer mt-auto py-3 col-md-12 mt-3 mb-3  px-3">-->
+<!--                <div class="container-fluid bg-white block p-3">-->
+<!--                    <p>Выльдуров Александр ИСИП-208</p>-->
+<!--                </div>-->
+<!--            </footer>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+
+
     <script type="module" src="client.js"></script>
 </body>
 </html>

@@ -111,15 +111,20 @@
 document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
 
     const studentsBlock = document.querySelector('.students'),
-        group = prompt('Введите группу: '),
-        nothing = document.querySelector('span'),
-        studentInfo = studentsBlock.appendChild(document.querySelector('p'));
-    if(studentInfo){
-        studentInfo.remove()
+        group = prompt('Введите группу: ');
+        // studentInfo = studentsBlock.appendChild(document.querySelector('p'));
+    if(document.querySelector('.error')){
+        document.querySelector('.error').remove();
+    }
+    if(document.querySelector('.list>p')){
+        document.querySelector('.list>p').remove()
+    }
+    if(document.querySelector('.nothing')){
+        document.querySelector('.nothing').remove();
     }
     if(group.length > 0){
 
-        fetch('/getStudentsByGroup/', {
+        fetch('/getStudentsByGroup', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -136,9 +141,8 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
                 return response.json();
             })
             .then(data => {
-                nothing.innerHTML = ''
                 if (data.repository && data.repository.length > 0) {
-                    console.log(data.repository)
+
                     data.repository.forEach(student =>{
                         studentsBlock.appendChild(document.createElement('p')).innerHTML = `
                         ID: ${student.id} <br> 
@@ -148,7 +152,15 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
                         Группа: ${student._group}<br>`;
                     })
                 } else {
-                    studentsBlock.appendChild(document.createElement('p')).innerHTML = 'Студентов нет';
+                    studentsBlock.innerHTML =
+                        `
+                            <div class="error text-center align-content-center">
+                                <div class="error_wrapper p-5">
+                                    <img src="img/404.png" alt="Ничего не найдено">
+                                    <p>Похоже ничего не найдено</p>
+                                </div>
+                            </div>
+                        `;
                 }
             })
             .catch(error => {
@@ -172,7 +184,7 @@ document.getElementById("addStudent").addEventListener('click',()=>{
         group
     };
     // console.log(studentData);
-    fetch('addStudent/',{
+    fetch('addStudent',{
         method:"POST",
         headers:{
             'Content-type':'application/json'

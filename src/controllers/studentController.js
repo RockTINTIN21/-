@@ -4,6 +4,20 @@ const app = express.Router();
 const Repo = new Repository();
 app.use(express.json());
 
+function addToRepo() {
+    const students = [
+        { name: "Иван", lastName: "Иванов", age: 20, group: "ПСО204" },
+        { name: "Сергей", lastName: "Сергеев", age: 21, group: "ИСИП208" },
+        { name: "Мария", lastName: "Мариева", age: 22, group: "ИСИП206" },
+        { name: "Илья", lastName: "Мариев", age: 19, group: "ИСИП203" },
+        { name: "Ильфывя", lastName: "Марийцуев", age: 19, group: "ИСИП203" },
+        { name: "Илйцуья", lastName: "Маыфвриев", age: 19, group: "ИСИП203" }
+    ];
+
+    students.forEach(student => {
+        Repo.addStudent(student.name, student.lastName, student.age, student.group);
+    });
+}
 
 app.post('/getStudentsByGroup', (req, res) => {
     try {
@@ -36,4 +50,7 @@ app.post('/addStudent',(req,res)=>{
         });
     }
 })
-module.exports = app;
+module.exports = {
+    app,
+    addToRepo
+};
