@@ -10,14 +10,14 @@
 <body>
     <div class="wrapper p-3">
         <header class="bg-white">
-            <h4>Учет студентов и преподавателей УРПЭТ</h4>
+            <h4>Учет студентов УРПЭТ</h4>
         </header>
         <div class="content">
             <main class="main-content mt-3">
                 <div class="bg-white">
                     <h3>Что хотите сделать сегодня?</h3>
                     <div class="buttons">
-                        <button type="button" class="btn btn-primary" id="addStudent">Добавить студента</button>
+                        <button type="button" class="btn btn-primary" id="addStudent" data-bs-toggle="modal" data-bs-target="#addStudentModal">Добавить студента</button>
                         <button type="button" class="btn btn-primary" id="getAllStudents">Вывести всех студентов</button>
                         <button type="button" class="btn btn-primary" id="delStudent">Удалить студента</button>
                         <button type="button" class="btn btn-primary" id="updateStudent">Изменить студента</button>
@@ -29,16 +29,10 @@
             <aside class="col-md-2 bg-white ms-3 mt-3 mb-3 ">
                 <h5 class="text-center">Список</h5>
                 <div class="list students">
-                    <div class="nothing">
-                        <p>Здесь пока ничего нет :(</p>
+                    <div class="nothing p-5">
+                        <p>Здесь пока ничего нет.</p>
                     </div>
                 </div>
-
-
-
-
-
-
             </aside>
         </div>
         <footer class="footer mt-auto py-3 bg-white">
@@ -48,6 +42,56 @@
         </footer>
     </div>
 
+    <div class="modal fade" id="success" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавление студента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h1>Успешно!</h1>
+                    <img src="img/mark.png" alt="">
+                    <p class="studentName"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавление студента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddStudent">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Имя:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div id="validationFormStudentName" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Отчество:</label>
+                            <input type="text" class="form-control"  name="lastName" id="lastName" required>
+                            <div id="validationFormStudentLastName" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Возраст:</label>
+                            <input type="text" class="form-control" id="age" name="age" required>
+                            <div id="validationFormStudentAge" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="group" class="form-label">Группа:</label>
+                            <input type="text" class="form-control" id="group" name="group" required>
+                            <div id="validationFormStudentGroup" class="invalid-feedback"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary container-fluid" >Добавить студента</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!--    <div class="container-fluid">-->
 <!--        <div class="row">-->

@@ -1,5 +1,5 @@
-const Student = require('../../../task17/backend/models/Student');
-const Teacher = require('../../../task17/backend/models/Teacher');
+const Student = require('../models/Student');
+const Teacher = require('../models/Teacher');
 class Repository{
     constructor(){
         this.repository = [

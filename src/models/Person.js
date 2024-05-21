@@ -1,3 +1,4 @@
+
 class Person{
     _age;
     _name;
@@ -18,7 +19,9 @@ class Person{
     }
     set name(newName) {
         if (this.checkString(newName)) {
-            throw new Error("Имя должно содержать только кириллицу и быть не больше 25 букв");
+            const error =  new Error("Имя должно содержать только кириллицу и быть не больше 25 букв");
+            error.name = "name";
+            throw error;
         }
         this._name = newName;
     }
@@ -27,8 +30,11 @@ class Person{
     }
     set lastName(newLastN){
         if(this.checkString(newLastN)){
-            throw new Error("Отчество должно содержать только кириллицу и быть не больше 25 букв")
+            const error = new Error("Отчество должно содержать только кириллицу и быть не больше 25 букв")
+            error.name = "lastName";
+            throw error;
         }
+
         this._lastName = newLastN;
     }
     get age(){
@@ -36,7 +42,9 @@ class Person{
     }
     set age(newAge){
         if(this.checkNumber(newAge) || newAge > 120){
-            throw new Error("Возраст должен быть положительным числом и не больше 120" + newAge);
+            const error = new Error("Возраст должен быть положительным числом и не больше 120");
+            error.name = "age";
+            throw error;
         }
         this._age = newAge;
     }

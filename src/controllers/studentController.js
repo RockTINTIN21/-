@@ -43,10 +43,12 @@ app.post('/addStudent',(req,res)=>{
             student: student
         });
     }catch (error){
-        console.error("Ошибка:", error);
         res.status(400).send({
             status: 'error',
-            message: error.message
+            errors: {
+                field: error.name,
+                message: error.message
+            }
         });
     }
 })

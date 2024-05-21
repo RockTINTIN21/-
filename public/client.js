@@ -107,12 +107,8 @@
 //             console.log('Ошибка:', error.message);
 //         });
 // });
-
-document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
-
-    const studentsBlock = document.querySelector('.students'),
-        group = prompt('Введите группу: ');
-        // studentInfo = studentsBlock.appendChild(document.querySelector('p'));
+const studentsBlock = document.querySelector('.students')
+const clearText = () =>{
     if(document.querySelector('.error')){
         document.querySelector('.error').remove();
     }
@@ -122,8 +118,27 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
     if(document.querySelector('.nothing')){
         document.querySelector('.nothing').remove();
     }
-    if(group.length > 0){
+}
+const errorText = () =>{
+    studentsBlock.innerHTML =
+        `
+            <div class="error text-center align-content-center">
+                <div class="error_wrapper p-5">
+                    <img src="img/404.png" alt="Ничего не найдено">
+                    <p>Похоже ничего не найдено</p>
+                </div>
+            </div>
+        `;
+}
 
+// function addStudentModal(){
+//
+// }
+
+document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
+    const group = prompt('Введите группу: ');
+    clearText()
+    if(group.length > 0){
         fetch('/getStudentsByGroup', {
             method: "POST",
             headers: {
@@ -132,7 +147,6 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
             body: JSON.stringify({ group })
         })
             .then(response => {
-                console.log(response)
                 if (!response.ok) {
                     return response.json().then(error => {
                         throw new Error(error.error);
@@ -142,7 +156,6 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
             })
             .then(data => {
                 if (data.repository && data.repository.length > 0) {
-
                     data.repository.forEach(student =>{
                         studentsBlock.appendChild(document.createElement('p')).innerHTML = `
                         ID: ${student.id} <br> 
@@ -152,60 +165,118 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
                         Группа: ${student._group}<br>`;
                     })
                 } else {
-                    studentsBlock.innerHTML =
-                        `
-                            <div class="error text-center align-content-center">
-                                <div class="error_wrapper p-5">
-                                    <img src="img/404.png" alt="Ничего не найдено">
-                                    <p>Похоже ничего не найдено</p>
-                                </div>
-                            </div>
-                        `;
+                    errorText();
                 }
             })
             .catch(error => {
                 console.error('Ошибка:', error.message);
-                studentsBlock.innerHTML = 'Произошла ошибка при обработке запроса. Пожалуйста, проверьте введенные данные и повторите попытку.';
+                studentsBlock.innerHTML = 'Произошла ошибка при обработке запроса. Пожалуйста, проверьте введенные данные и повторите попытку. Текст ошибки:' + error.message;
             });
     }else{
         alert('Запрос не может быть пустым')
     }
 
 })
-document.getElementById("addStudent").addEventListener('click',()=>{
-    const name = prompt("Введите имя студента:"),
-    lastName = prompt("Введите фамилию студента:"),
-    age = prompt("Введите возраст студента:"),
-    group = prompt("Введите группу студента:"),
-    studentData = {
-        name,
-        lastName,
-        age,
-        group
-    };
-    // console.log(studentData);
-    fetch('addStudent',{
-        method:"POST",
-        headers:{
-            'Content-type':'application/json'
-        },
-        body: JSON.stringify(studentData)
-    })
-        .then(response => {
-            return response.json()
-                .then(data => {
-                if (!response.ok) {
-                    throw new Error(data.message || 'Что-то пошло не так');
+
+document.getElementById("addStudent").addEventListener('click',(e)=>{
+
+    const formStudentData = document.getElementById('formAddStudent');
+    formStudentData.addEventListener('submit',(e)=> {
+        e.preventDefault();
+        const formData = new FormData(formStudentData);
+        const studentData = {
+            name: formData.get('name'),
+            lastName: formData.get('lastName'),
+            age: formData.get('age'),
+            group: formData.get('group')
+        };
+        fetch('addStudent', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(studentData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error'){
+                    document.querySelectorAll('#formAddStudent input').forEach(input =>{
+                        if (input.classList.contains('is-invalid')) {
+                            input.classList.remove('is-invalid');
+                        }
+                    })
+                    document.querySelectorAll('#formAddStudent .invalid-feedback').forEach(feedback=>{
+                        if (/[а-я]/i.test(feedback.innerText)) {
+                            feedback.innerText = '';
+                        }
+                    });
+                    const validationForm = {
+                        name: 'validationFormStudentName',
+                        lastName: 'validationFormStudentLastName',
+                        age: 'validationFormStudentAge',
+                        group:'validationFormStudentGroup'
+                    }
+                    document.getElementById('formAddStudent')
+                    const currentId = validationForm[data.errors.field];
+                    const inputElement = document.getElementById(data.errors.field);
+                    document.getElementById(currentId).style.display = 'block'
+                    document.getElementById(currentId).innerText = data.errors.message;
+                    if (inputElement) {
+                        inputElement.classList.add('is-invalid');
+                    }
+                }else{
+                    let successModal = new bootstrap.Modal(document.getElementById('success'));
+
+                    let p = document.createElement('p');
+                    document.querySelector('.studentName').innerHTML = '';
+                    document.querySelector('.studentName').textContent = `Студент, ${studentData.name} был добавлен!`;
+                    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
+                    modalInstance.hide();
+                    let modalBody = document.querySelector('#success .modal-body');
+                    modalBody.appendChild(p);
+                    successModal.show();
                 }
-                return data;
+            })
+            .catch(error => {
+                console.error('Ошибка:', error.message);
             });
-        })
-        .then(data => {
-            alert(`Студент ${data}, добавлен`)
-        })
-        .catch(error => {
-            console.error('Ошибка:', error.message);
-            alert('Произошла ошибка: ' + error.message);
-        });
+
+    })
+
 })
-// console.log(`ID: ${data.id}, Имя: ${data._name}, Отчество: ${data._lastName}, возраст: ${data._age} лет, группа: ${data._group} \n`);
+// document.getElementById("addStudent").addEventListener('click',()=>{
+//
+//     const name = prompt("Введите имя студента:"),
+//     lastName = prompt("Введите фамилию студента:"),
+//     age = prompt("Введите возраст студента:"),
+//     group = prompt("Введите группу студента:"),
+//     studentData = {
+//         name,
+//         lastName,
+//         age,
+//         group
+//     };
+//     fetch('addStudent',{
+//         method:"POST",
+//         headers:{
+//             'Content-type':'application/json'
+//         },
+//         body: JSON.stringify(studentData)
+//     })
+//         .then(response => {
+//             return response.json()
+//                 .then(data => {
+//                 if (!response.ok) {
+//                     throw new Error(data.message || 'Что-то пошло не так');
+//                 }
+//                 return data;
+//             });
+//         })
+//         .then(data => {
+//             alert(`Студент ${data}, добавлен`)
+//         })
+//         .catch(error => {
+//             console.error('Ошибка:', error.message);
+//             alert('Произошла ошибка: ' + error.message);
+//         });
+// })
