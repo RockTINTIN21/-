@@ -1,9 +1,10 @@
+const { v4: uuidv4 } = require('uuid');
 const Person = require('./Person');
 class Student extends Person{
     _group
     constructor(name,lastName,age,group) {
         super(name, lastName, age);
-        this.id = Date.now();
+        this.id = uuidv4();
         this.group = group;
     }
     get group(){

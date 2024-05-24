@@ -130,10 +130,11 @@ const errorText = () =>{
             </div>
         `;
 }
-
-// function addStudentModal(){
-//
-// }
+document.querySelector('#addStudentModal').addEventListener('hidden.bs.modal',function (e){
+    document.querySelector('#addStudentModal').querySelector('#formAddStudent').reset();
+    document.querySelectorAll('.invalid-feedback').forEach(elem=> elem.innerHTML = '')
+    document.querySelectorAll('.form-control').forEach(elem=> elem.classList.remove('is-invalid'))
+})
 
 document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
     const group = prompt('Введите группу: ');
@@ -169,81 +170,260 @@ document.getElementById("getStudentsByGroup").addEventListener('click',()=>{
                 }
             })
             .catch(error => {
-                console.error('Ошибка:', error.message);
                 studentsBlock.innerHTML = 'Произошла ошибка при обработке запроса. Пожалуйста, проверьте введенные данные и повторите попытку. Текст ошибки:' + error.message;
             });
     }else{
         alert('Запрос не может быть пустым')
     }
-
 })
+document.getElementById("updateStudent").addEventListener('click', (e) => {
+    const formStudentData = document.getElementById('formRemoveStudent');
+    formStudentData.submitEventAttached = formStudentData.submitEventAttached || false;
 
-document.getElementById("addStudent").addEventListener('click',(e)=>{
-
-    const formStudentData = document.getElementById('formAddStudent');
-    formStudentData.addEventListener('submit',(e)=> {
-        e.preventDefault();
-        const formData = new FormData(formStudentData);
-        const studentData = {
-            name: formData.get('name'),
-            lastName: formData.get('lastName'),
-            age: formData.get('age'),
-            group: formData.get('group')
-        };
-        fetch('addStudent', {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(studentData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'error'){
-                    document.querySelectorAll('#formAddStudent input').forEach(input =>{
-                        if (input.classList.contains('is-invalid')) {
-                            input.classList.remove('is-invalid');
-                        }
-                    })
-                    document.querySelectorAll('#formAddStudent .invalid-feedback').forEach(feedback=>{
-                        if (/[а-я]/i.test(feedback.innerText)) {
-                            feedback.innerText = '';
-                        }
-                    });
-                    const validationForm = {
-                        name: 'validationFormStudentName',
-                        lastName: 'validationFormStudentLastName',
-                        age: 'validationFormStudentAge',
-                        group:'validationFormStudentGroup'
-                    }
-                    document.getElementById('formAddStudent')
-                    const currentId = validationForm[data.errors.field];
-                    const inputElement = document.getElementById(data.errors.field);
-                    document.getElementById(currentId).style.display = 'block'
-                    document.getElementById(currentId).innerText = data.errors.message;
-                    if (inputElement) {
-                        inputElement.classList.add('is-invalid');
-                    }
-                }else{
-                    let successModal = new bootstrap.Modal(document.getElementById('success'));
-
-                    let p = document.createElement('p');
-                    document.querySelector('.studentName').innerHTML = '';
-                    document.querySelector('.studentName').textContent = `Студент, ${studentData.name} был добавлен!`;
-                    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
-                    modalInstance.hide();
-                    let modalBody = document.querySelector('#success .modal-body');
-                    modalBody.appendChild(p);
-                    successModal.show();
-                }
+    if (!formStudentData.submitEventAttached) {
+        formStudentData.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(formStudentData);
+            const studentData = {
+                id: formData.get('id')
+            };
+            fetch('updateStudent', {
+                method: "UPDATE",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(studentData)
             })
-            .catch(error => {
-                console.error('Ошибка:', error.message);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'error') {
+                        document.querySelectorAll('#formRemoveStudent input').forEach(input => {
+                            if (input.classList.contains('is-invalid')) {
+                                input.classList.remove('is-invalid');
+                            }
+                        });
+                        document.querySelectorAll('#formRemoveStudent .invalid-feedback').forEach(feedback => {
+                            if (/[а-я]/i.test(feedback.innerText)) {
+                                feedback.innerText = '';
+                            }
+                        });
+                        const validationForm = {
+                            id: 'validationFormStudentID'
+                        };
+                        const currentId = validationForm[data.errors.field];
+                        console.log(data.errors.message)
+                        const inputElement = document.getElementById(data.errors.field);
+                        document.getElementById(currentId).style.display = 'block';
+                        document.getElementById(currentId).innerText = data.errors.message;
+                        if (inputElement) {
+                            inputElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        let successModal = new bootstrap.Modal(document.getElementById('success'));
+                        let p = document.createElement('p');
+                        document.querySelector('.studentName').innerHTML = '';
+                        document.querySelector('.studentName').textContent = `Студент, ${studentData.id} был удален!`;
+                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('removeStudentModal'));
+                        modalInstance.hide();
+                        let modalBody = document.querySelector('#success .modal-body');
+                        modalBody.appendChild(p);
+                        successModal.show();
+                    }
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+        });
+        formStudentData.submitEventAttached = true;
+    }
+});
+document.getElementById("delStudent").addEventListener('click', (e) => {
+    const formStudentData = document.getElementById('formRemoveStudent');
+    formStudentData.submitEventAttached = formStudentData.submitEventAttached || false;
 
-    })
+    if (!formStudentData.submitEventAttached) {
+        formStudentData.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(formStudentData);
+            const studentData = {
+                id: formData.get('id')
+            };
+            fetch('delStudent', {
+                method: "DELETE",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(studentData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'error') {
+                        document.querySelectorAll('#formRemoveStudent input').forEach(input => {
+                            if (input.classList.contains('is-invalid')) {
+                                input.classList.remove('is-invalid');
+                            }
+                        });
+                        document.querySelectorAll('#formRemoveStudent .invalid-feedback').forEach(feedback => {
+                            if (/[а-я]/i.test(feedback.innerText)) {
+                                feedback.innerText = '';
+                            }
+                        });
+                        const validationForm = {
+                            id: 'validationFormStudentID'
+                        };
+                        const currentId = validationForm[data.errors.field];
+                        console.log(data.errors.message)
+                        const inputElement = document.getElementById(data.errors.field);
+                        document.getElementById(currentId).style.display = 'block';
+                        document.getElementById(currentId).innerText = data.errors.message;
+                        if (inputElement) {
+                            inputElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        let successModal = new bootstrap.Modal(document.getElementById('success'));
+                        let p = document.createElement('p');
+                        document.querySelector('.studentName').innerHTML = '';
+                        document.querySelector('.studentName').textContent = `Студент, ${studentData.id} был удален!`;
+                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('removeStudentModal'));
+                        modalInstance.hide();
+                        let modalBody = document.querySelector('#success .modal-body');
+                        modalBody.appendChild(p);
+                        successModal.show();
+                    }
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+        });
+        formStudentData.submitEventAttached = true;
+    }
+});
+document.getElementById("addStudent").addEventListener('click', (e) => {
+    const formStudentData = document.getElementById('formAddStudent');
+    formStudentData.submitEventAttached = formStudentData.submitEventAttached || false;
 
-})
+    if (!formStudentData.submitEventAttached) {
+        formStudentData.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(formStudentData);
+            const studentData = {
+                name: formData.get('name'),
+                lastName: formData.get('lastName'),
+                age: formData.get('age'),
+                group: formData.get('group')
+            };
+            fetch('addStudent', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(studentData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'error') {
+                        document.querySelectorAll('#formAddStudent input').forEach(input => {
+                            if (input.classList.contains('is-invalid')) {
+                                input.classList.remove('is-invalid');
+                            }
+                        });
+                        document.querySelectorAll('#formAddStudent .invalid-feedback').forEach(feedback => {
+                            if (/[а-я]/i.test(feedback.innerText)) {
+                                feedback.innerText = '';
+                            }
+                        });
+                        const validationForm = {
+                            name: 'validationFormStudentName',
+                            lastName: 'validationFormStudentLastName',
+                            age: 'validationFormStudentAge',
+                            group: 'validationFormStudentGroup'
+                        };
+                        const currentId = validationForm[data.errors.field];
+                        const inputElement = document.getElementById(data.errors.field);
+                        document.getElementById(currentId).style.display = 'block';
+                        document.getElementById(currentId).innerText = data.errors.message;
+                        if (inputElement) {
+                            inputElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        let successModal = new bootstrap.Modal(document.getElementById('success'));
+                        let p = document.createElement('p');
+                        document.querySelector('.studentName').innerHTML = '';
+                        document.querySelector('.studentName').textContent = `Студент, ${studentData.name} был добавлен!`;
+                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
+                        modalInstance.hide();
+                        let modalBody = document.querySelector('#success .modal-body');
+                        modalBody.appendChild(p);
+                        successModal.show();
+                    }
+                })
+        });
+        formStudentData.submitEventAttached = true;
+    }
+});
+// document.getElementById("addStudent").addEventListener('click', (e) => {
+//     const formStudentData = document.getElementById('formAddStudent');
+//     formStudentData.submitEventAttached = formStudentData.submitEventAttached || false;
+//
+//     if (!formStudentData.submitEventAttached) {
+//         formStudentData.addEventListener('submit', async (e) => {
+//             e.preventDefault();
+//             const formData = new FormData(formStudentData);
+//             const studentData = {
+//                 name: formData.get('name'),
+//                 lastName: formData.get('lastName'),
+//                 age: formData.get('age'),
+//                 group: formData.get('group')
+//             };
+//             const response = await fetch('addStudent', {
+//                 method: "POST",
+//                 headers: {
+//                     'Content-type': 'application/json'
+//                 },
+//                 body: JSON.stringify(studentData)
+//             })
+//             const data = await response.json()
+//             if (response.status === 200) {
+//                 document.querySelectorAll('#formAddStudent input').forEach(input => {
+//                     if (input.classList.contains('is-invalid')) {
+//                         input.classList.remove('is-invalid');
+//                     }
+//                 });
+//                 document.querySelectorAll('#formAddStudent .invalid-feedback').forEach(feedback => {
+//                     if (/[а-я]/i.test(feedback.innerText)) {
+//                         feedback.innerText = '';
+//                     }
+//                 });
+//                 const validationForm = {
+//                     name: 'validationFormStudentName',
+//                     lastName: 'validationFormStudentLastName',
+//                     age: 'validationFormStudentAge',
+//                     group: 'validationFormStudentGroup'
+//                 };
+//                 const currentId = validationForm[data.errors.field];
+//                 const inputElement = document.getElementById(data.errors.field);
+//                 document.getElementById(currentId).style.display = 'block';
+//                 document.getElementById(currentId).innerText = data.errors.message;
+//                 if (inputElement) {
+//                     inputElement.classList.add('is-invalid');
+//                 }
+//             }else if(response.status===201) {
+//                 let successModal = new bootstrap.Modal(document.getElementById('success'));
+//                 let p = document.createElement('p');
+//                 document.querySelector('.studentName').innerHTML = '';
+//                 document.querySelector('.studentName').textContent = `Студент, ${studentData.name} был добавлен!`;
+//                 const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addStudentModal'));
+//                 modalInstance.hide();
+//                 let modalBody = document.querySelector('#success .modal-body');
+//                 modalBody.appendChild(p);
+//                 successModal.show();
+//             }else{
+//                 console.log('error')
+//             }
+//         })
+//         formStudentData.submitEventAttached = true;
+//     }
+// });
 // document.getElementById("addStudent").addEventListener('click',()=>{
 //
 //     const name = prompt("Введите имя студента:"),

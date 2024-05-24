@@ -7,20 +7,16 @@ class Repository{
         ];
     }
     filterStudentsByGroup(group) {
-
         const filtered = this.repository.filter(student => student.group.toLowerCase() === group.toLowerCase());
         if (filtered.length === 0) {
-            console.log(this.repository)
             return { repository: [] };
         } else {
-            console.log(this.repository)
             return filtered;
         }
     }
     addStudent(name, lastName, age, group) {
         const student = new Student(name, lastName, age, group);
         this.repository.push(student);
-        console.log(this.repository)
     }
 
     // addTeacher(name, lastName, age, object,cabinet) {
@@ -43,24 +39,28 @@ class Repository{
     //         return {students: this.repository}
     //     }
     // }
-    // deleteStudent(id) {
-    //     const indexStudent = this.repository.findIndex(student => student.id === id);
-    //     if (indexStudent !== -1) {
-    //         this.repository.splice(indexStudent, 1);
-    //         return { message: `Студент с ID ${id} существует и только что был удален` };
-    //     } else {
-    //         return { message: `Студент с ID ${id} не существует` };
-    //     }
-    // }
-    // updateStudent(id, name, lastName, age, group) {
-    //     const indexStudent = this.repository.findIndex(student => student.id === id);
-    //     if (indexStudent === -1) {
-    //         return "Нет студентов с таким id: " + id;
-    //     } else {
-    //         this.repository[indexStudent] = { id, name, lastName, age, group };
-    //         return "Студент с id: " + id + " обновлен";
-    //     }
-    // }
+    deleteStudent(id) {
+        console.log(`Ищем студента с id: ${id}`); // Логирование id
+        console.log('Текущий репозиторий:', this.repository); // Логирование репозитория
+        const indexStudent = this.repository.findIndex(student => student.id === id);
+        console.log(indexStudent)
+        if (indexStudent !== -1) {
+            this.repository.splice(indexStudent, 1);
+        } else {
+            const error = new Error("Такого студента не существует!");
+            error.name = "id";
+            throw error;
+        }
+    }
+    updateStudent(id, name, lastName, age, group) {
+        const indexStudent = this.repository.findIndex(student => student.id === id);
+        if (indexStudent === -1) {
+            return "Нет студентов с таким id: " + id;
+        } else {
+            this.repository[indexStudent] = { id, name, lastName, age, group };
+            return "Студент с id: " + id + " обновлен";
+        }
+    }
     // filterStudentsByGroup(group) {
     //     console.log(this.repository.name)
     //     const filtered = this.repository.filter(function (student){
@@ -76,9 +76,4 @@ class Repository{
     //     }
     // }
 }
-const Repo = new Repository();
-
-// Repo.addStudent('фыв','фыв',20,'псо204');
-// console.log(Repo.repository)
-// console.log(Repo.filterStudentsByGroup('asd'))
 module.exports = Repository
