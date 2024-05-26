@@ -1,5 +1,4 @@
 const Student = require('../models/Student');
-const Teacher = require('../models/Teacher');
 class Repository{
     constructor(){
         this.repository = [];
