@@ -6,12 +6,13 @@
     "start": "nodemon app.js"
   },
   "keywords": [],
-  "author": "RockTINTIN21",
+  "author": "Alexander Vyldurov",
   "license": "ISC",
   "description": "Учет студентов и преподавателей УРПЭТ",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

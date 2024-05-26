@@ -18,11 +18,9 @@
                     <h3>Что хотите сделать сегодня?</h3>
                     <div class="buttons">
                         <button type="button" class="btn btn-primary" id="addStudent" data-bs-toggle="modal" data-bs-target="#addStudentModal">Добавить студента</button>
-                        <button type="button" class="btn btn-primary" id="getAllStudents">Вывести всех студентов</button>
-                        <button type="button" class="btn btn-primary" id="delStudent">Удалить студента</button>
-                        <button type="button" class="btn btn-primary" id="updateStudent">Изменить студента</button>
-                        <button class="btn btn-primary" type="button" id="getStudentsByGroup">Вывести студентов по группе</button>
-                        <button class="btn btn-primary" type="button" id="getStudentsByName">Вывести студентов по имени</button>
+                        <button type="button" class="btn btn-primary" id="delStudent" data-bs-toggle="modal" data-bs-target="#removeStudentModal">Удалить студента</button>
+                        <button type="button" class="btn btn-primary" id="updateStudent" data-bs-toggle="modal" data-bs-target="#updateStudentModal">Изменить студента</button>
+                        <button class="btn btn-primary" type="button" id="getStudentsByGroup" data-bs-toggle="modal" data-bs-target="#getStudentByGroupModal">Вывести студентов по группе</button>
                     </div>
                 </div>
             </main>
@@ -46,7 +44,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Добавление студента</h5>
+                    <h5 class="modal-title">Успешно</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body text-center">
@@ -57,6 +55,49 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="removeStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление студента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRemoveStudent">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">ID Студента:</label>
+                            <input type="text" class="form-control" id="id" name="id" required>
+                            <div id="validationFormStudentID" class="invalid-feedback"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary container-fluid">Удалить студента</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="getStudentByGroupModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Поиск студента по группе</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formGetStudentByGroup">
+                        <div class="mb-3">
+                            <label for="groupGet" class="form-label">Группа:</label>
+                            <input type="text" class="form-control" id="groupGet" name="group" required>
+                            <div id="validationFormGetStudentGroup" class="invalid-feedback"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary container-fluid">Найти студента</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -93,49 +134,46 @@
         </div>
     </div>
 
-<!--    <div class="container-fluid">-->
-<!--        <div class="row">-->
-<!--            <header class="col-md-12 mt-3 mb-3 px-3">-->
-<!--                <div class="container-fluid block p-3 bg-white d-flex">-->
-<!--                    <div class="col-10">-->
-<!--                        <h3>Учет студентов и преподавателей УРПЭТ</h3>-->
-<!--                    </div>-->
-<!--                    <div class="col-2">-->
-<!--                        <a href="about.html" class="btn btn-primary container-fluid m-2">Обо мне</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </header>-->
-<!--            <main class="col-md-10 ps-3">-->
-<!--                <div class="container-fluid block p-3 bg-white ">-->
-<!--                    <h3>Что хотите сделать сегодня?</h3>-->
-<!--                    <div class="buttons">-->
-<!--                        <button type="button" class="btn btn-primary" id="addStudent">Добавить студента</button>-->
-<!--                        <button type="button" class="btn btn-primary" id="getAllStudents">Вывести всех студентов</button>-->
-<!--                        <button type="button" class="btn btn-primary" id="delStudent">Удалить студента</button>-->
-<!--                        <button type="button" class="btn btn-primary" id="updateStudent">Изменить студента</button>-->
-<!--                        <button class="btn btn-primary" type="button" id="getStudentsByGroup">Вывести студентов по группе</button>-->
-<!--                        <button class="btn btn-primary" type="button" id="getStudentsByName">Вывести студентов по имени</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </main>-->
-<!--            <aside class="col-md-2 pe-3">-->
-<!--                <div class="container-fluid block p-3 students bg-white ">-->
-<!--                    <h5 class="text-center">Список студентов</h5>-->
-<!--                    <span id="students">Здесь пока ничего нет :(</span>-->
-<!--                </div>-->
-<!--            </aside>-->
-<!--            <footer class="footer mt-auto py-3 col-md-12 mt-3 mb-3  px-3">-->
-<!--                <div class="container-fluid bg-white block p-3">-->
-<!--                    <p>Выльдуров Александр ИСИП-208</p>-->
-<!--                </div>-->
-<!--            </footer>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-
-
-
+    <div class="modal fade" id="updateStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Обновление студента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUpdateStudent">
+                        <div class="mb-3">
+                            <label for="idUpdate" class="form-label">ID:</label>
+                            <input type="text" class="form-control" id="idUpdate" name="id" required>
+                            <div id="validationFormUpdateStudentId" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nameUpdate" class="form-label">Имя:</label>
+                            <input type="text" class="form-control" id="nameUpdate" name="name" required>
+                            <div id="validationFormUpdateStudentName" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastNameUpdate" class="form-label">Отчество:</label>
+                            <input type="text" class="form-control"  name="lastName" id="lastNameUpdate" required>
+                            <div id="validationFormUpdateStudentLastName" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ageUpdate" class="form-label">Возраст:</label>
+                            <input type="text" class="form-control" id="ageUpdate" name="age" required>
+                            <div id="validationFormUpdateStudentAge" class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="groupUpdate" class="form-label">Группа:</label>
+                            <input type="text" class="form-control" id="groupUpdate" name="group" required>
+                            <div id="validationFormUpdateStudentGroup" class="invalid-feedback"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary container-fluid">Обновить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="module" src="client.js"></script>
 </body>
 </html>

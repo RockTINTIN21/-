@@ -19,7 +19,7 @@ class Person{
     }
     set name(newName) {
         if (this.checkString(newName)) {
-            const error =  new Error("Имя должно содержать только кириллицу и быть не больше 25 букв");
+            const error = new Error("Имя должно содержать только кириллицу и быть не больше 25 букв");
             error.name = "name";
             throw error;
         }
